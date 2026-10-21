@@ -1,0 +1,164 @@
+/* Importazione font IBM Plex Sans */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700;800&display=swap');
+
+/* Regole generali della pagina */
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background-color: #F1F3F5;
+    color: #1F2328;
+    margin: 0;
+    padding: 0 60px;
+    
+    /* Centramento verticale e orizzontale */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    width: 100%;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 24px;
+}
+
+/* Base per il box/card */
+.card {
+    width: 360px;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background-color: #FFFFFF;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Stili del Form */
+.form-group {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    border: 1px solid #D0D7DE;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+/* Pulsante principale */
+.btn {
+    background-color: #1F2328;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'IBM Plex Sans', sans-serif;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+/* Stili della Card Risultato (bmi.php) */
+.card-risultato {
+    border-style: solid;
+    border-width: 3px;
+}
+
+.nome-utente {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.dati-inseriti {
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.valore-bmi {
+    font-size: 48px;
+    font-weight: 800;
+    color: #000000;
+    margin-bottom: 12px;
+}
+
+.testo-fascia {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+/* 1. Sfondo e bordo per le card */
+.sottopeso {
+    background-color: #E3EEF9;
+    border-color: #2F6FB3;
+}
+
+.normopeso {
+    background-color: #E3F4E6;
+    border-color: #256D34;
+}
+
+.sovrappeso {
+    background-color: #FCEBD7;
+    border-color: #9A4F06;
+}
+
+.obesita {
+    background-color: #FBE2E2;
+    border-color: #B32D2D;
+}
+
+/* 2. Colore applicato SOLO alla scritta della fascia */
+.sottopeso .testo-fascia {
+    color: #2F6FB3;
+}
+
+.normopeso .testo-fascia {
+    color: #256D34;
+}
+
+.sovrappeso .testo-fascia {
+    color: #9A4F06;
+}
+
+.obesita .testo-fascia {
+    color: #B32D2D;
+}
+
+/* Link di ritorno */
+.link-riprova {
+    display: inline-block;
+    margin-top: 24px;
+    color: #1F2328;
+    font-size: 14px;
+}
+
+/* Media Query per dispositivi mobili */
+@media (max-width: 480px) {
+    body {
+        padding: 0 16px;
+    }
+
+    .card {
+        width: 100%;
+        padding: 16px;
+    }
+}

@@ -1,0 +1,31 @@
+Genera un layout web con contenuto centrato verticalmente e orizzontalmente strutturato su due pagine. Il layout deve essere a singola colonna. 
+
+Stili comuni di entrambe le pagine: 
+- sfondo pagina #F1F3F5, testo #1F2328
+- Font senza grazie per tutto (IBM Plex Sans)
+- contenuto centrato
+- Pulsante: sfondo #1F2328, testo bianco, angoli 8px, larghezza piena
+- box bianco largo 360px, padding 24px, angoli arrotondati 12px, ombra leggera
+
+FORM.HTML
+Il layout della prima pagina (form.html) deve avere come contenuto titolo per la pagina (Il titolo deve essere <h1>Calcolatore BMI</h1>) con sotto una card con sfondo bianco.
+Lo spazio laterale per il layout deve essere di 60px sui lati destro e sinistro.
+
+La card centrale contiene un pulsante in basso al centro, e un form con 3 campi: "Nome", "Peso (kg)", "Altezza (cm)".
+Ognuno di questi campi occupa in totale due righe intere: il label sopra e il campo di inserimento sotto. Ognuno dei tre campi deve essere obbligatorio.
+Il form deve avere: method="post" e action="bmi.php".
+- Pulsante di submit: sfondo #1F2328, testo bianco, angoli 8px, larghezza piena
+
+---
+BMI.PHP
+La seconda pagina deve leggere il nome, peso e altezza dalla pagina precedente e calcolare il BMI (peso / (altezza in m)^2).
+La pagina deve mostrare un titolo ("Il tuo BMI", stesso stile della pagina precedente) con sotto una card con nome (Al centro in grassetto) e sotto i dati inseriti (separati da un puntino &middot) e sotto una scritta con il BMI con due cifre decimali (font-size 48px), e la fascia in maiuscolo (SOTTOPESO, NORMOPESO, SOVRAPPESO, OBESITA')
+La card ha due classi: "card" e la classe della fascia ("sottopeso", "normopeso", "sovrappeso" o "obesità"). 
+Sotto la card, deve essere presente un link "Calcola di nuovo", che punta al form.html
+Le quattro classi della fascia hanno estetiche differenti:
+la card, nel caso di un sottopeso (BMI<18,5) = sfondo #E3EEF9 , con un bordo di colore #2F6FB3 
+nel caso di un normopeso (BMI da 18,5 a 24,9) = sfondo #E3F4E6, e bordo #256D34
+nel caso di un sovrappeso (BMI tra 25 e 29,9) = sfondo #FCEBD7, con bordo #9A4F06
+nel caso di obesità (BMI >= 30) = sfondo #FBE2E2, bordo #B32D2D
+
+Il bordo di queste card deve essere di 3px, la scritta della fascia usa il colore del bordo, il colore della scritta del numero del BMI deve essere nera.

@@ -1,14 +1,22 @@
 <?php
+if ($_SERVER["REQUEST_METHOD"] != "POST") {
+    header('Location: form.html');
+}
+
 // Lettura dei dati inviati dal form
-$nome = isset($_POST['nome']) ? htmlspecialchars(trim($_POST['nome'])) : '';
-$peso = isset($_POST['peso']) ? floatval($_POST['peso']) : 0;
-$altezza_cm = isset($_POST['altezza']) ? floatval($_POST['altezza']) : 0;
+$nome = isset($_POST['nome']) ? htmlspecialchars(trim($_POST['nome'])) : 'NOT_VALID';
+$peso = isset($_POST['peso']) ? floatval($_POST['peso']) : 'NOT_VALID';
+$altezza_cm = isset($_POST['altezza']) ? floatval($_POST['altezza']) : 'NOT_VALID';
 
 $bmi = 0;
 $fascia = '';
 $classe_card = '';
 
-if ($peso > 0 && $altezza_cm > 0) {
+if ($nome == "NOT_VALID" || $peso == "NOT_VALID" || $altezza_cm == "NOT_VALID") {
+    $bmi = "NOT_VALID";
+    $fascia = "NOT_VALID";
+} else {
+    if ($peso > 0 && $altezza_cm > 0) {
     // Calcolo del BMI: peso / (altezza in m)^2
     $altezza_m = $altezza_cm / 100;
     $bmi = $peso / ($altezza_m * $altezza_m);
@@ -28,6 +36,18 @@ if ($peso > 0 && $altezza_cm > 0) {
         $classe_card = 'obesita';
     }
 }
+    
+}
+    $data = date("d/m/o,G:i:s");
+    $ip = $_SERVER['REMOTE_ADDR'];
+
+    $nomeFile = "log.csv";
+    $file= fopen($nomeFile, "a");
+    
+    $record = implode(",", [$data, $ip, $nome, $altezza_cm, $peso, number_format($bmi, 2, '.', ''), $fascia]);
+    $record .= PHP_EOL;
+    fwrite($file, $record);
+    fclose($file);  
 ?>
 <!DOCTYPE html>
 <html lang="it">

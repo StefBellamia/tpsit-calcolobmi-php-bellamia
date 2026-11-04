@@ -162,3 +162,9 @@ input {
         padding: 16px;
     }
 }
+
+.errore-messaggio {
+    color: #d9534f; 
+    font-size: 0.85em;
+    margin-top: 5px;
+}

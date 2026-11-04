@@ -1,30 +1,42 @@
 <?php
-    $mostra_risulatato = false;
+    $mostra_form = true;
+
+    $ha_errore = "";
+
+    $errore_nome = "";
+    $errore_peso = "";
+    $errore_altezza = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $mostra_risulatato = true;
+    
     // Lettura dei dati inviati dal form
     $nome = isset($_POST['nome']) ? htmlspecialchars(trim($_POST['nome'])) : '';
     $pesoInput = isset($_POST['peso']) ? floatval($_POST['peso']) : 0;
     $altezzaInput = isset($_POST['altezza']) ? floatval($_POST['altezza']) : 0;
 
-    if ($nome == '') {
+    if ($nome === '') {
         $nome = "NOT_VALID";
+        $ha_errore = true;
+        $errore_nome = "Valore non valido.";
     }
 
     if ($pesoInput == null || !is_numeric($pesoInput) || floatval($pesoInput) <= 0) {
         $peso = "NOT_VALID";
+        $ha_errore = true;
+        $errore_peso = "Valore non valido.";
     } else {
         $peso = $pesoInput;
     }
 
     if ($altezzaInput == null || !is_numeric($altezzaInput) || $altezzaInput <= 0) {
         $altezza_cm = "NOT_VALID";
+        $ha_errore = true;
+        $errore_altezza = "Valore non valido.";
     } else {
         $altezza_cm = $altezzaInput;
     }
 
-
+    
     $bmi = 0;
     $fascia = '';
     $classe_card = '';
@@ -55,24 +67,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             
         }
+        if (!$ha_errore) {
+            $mostra_form = false;
         
-        $bmiFormatttato = ($bmi === "NOT_VALID") ? "NOT_VALID" : number_format($bmi, 2, '.', '');
-        $data = date("d/m/Y,G:i:s");
-        $ip = $_SERVER['REMOTE_ADDR'];
+            $bmiFormatttato = ($bmi === "NOT_VALID") ? "NOT_VALID" : number_format($bmi, 2, '.', '');
+            $data = date("d/m/Y,G:i:s");
+            $ip = $_SERVER['REMOTE_ADDR'];
 
-        $nomeFile = "log.csv";
-        $file= fopen($nomeFile, "a");
+            $nomeFile = "log.csv";
+            $file= fopen($nomeFile, "a");
+            
+            $record = implode(",", [$data, $ip, $nome, $altezza_cm, $peso, $bmiFormatttato, $fascia]);
+            $record .= PHP_EOL;
+            fwrite($file, $record);
+            fclose($file);  
+        }
         
-        $record = implode(",", [$data, $ip, $nome, $altezza_cm, $peso, $bmiFormatttato, $fascia]);
-        $record .= PHP_EOL;
-        fwrite($file, $record);
-        fclose($file);  
 
 }
 
 ?>
 
-<?php if (!$mostra_risulatato): ?> 
+<?php if ($mostra_form): ?> 
     <!DOCTYPE html>
     <html lang="it">
     <head>
@@ -89,15 +105,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form action="index.php" method="post">
                     <div class="form-group">
                         <label for="nome">Nome</label>
-                        <input type="text" id="nome" name="nome" placeholder="Luca" >
+                        <input type="text" id="nome" name="nome" placeholder="Luca" value="<?php if (!empty($errore_nome)) { echo htmlspecialchars($nome); } ?>">
+                        <?php if (!empty($errore_nome)): ?>
+                            <div class="errore-messaggio">
+                                <?php echo $errore_nome?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <div class="form-group">
-                        <label for="peso">Peso (kg)</label>
-                        <input type="text" id="peso" name="peso" step="any" placeholder="70" >
+                        <label for="peso">Peso (kg)</label>   <!-- Aggiungiamo un campo VALUE -->
+                        <input type="text" id="peso" name="peso" step="any" placeholder="70" value="<?php if (!empty($errore_peso)) { echo htmlspecialchars($pesoInput); } ?>">
+                        <?php if (!empty($errore_peso)): ?>
+                            <div class="errore-messaggio">
+                                <?php echo $errore_peso; ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <div class="form-group">
                         <label for="altezza">Altezza (cm)</label>
-                        <input type="text" id="altezza" name="altezza" step="any" placeholder="178" >
+                        <input type="text" id="altezza" name="altezza" step="any" placeholder="178" value="<?php if (!empty($errore_altezza)) { echo htmlspecialchars($altezzaInput); } ?>">
+                        <?php if (!empty($errore_altezzza)): ?>
+                            <div class="errore-messaggio">
+                                <?php echo $errore_altezza; ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <button type="submit" class="btn">Calcola</button>
                 </form>

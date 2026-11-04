@@ -7,17 +7,23 @@
     $errore_peso = "";
     $errore_altezza = "";
 
+    $nomeInput = "";
+    $pesoInput = "";
+    $altezzaInput = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Lettura dei dati inviati dal form
-    $nome = isset($_POST['nome']) ? htmlspecialchars(trim($_POST['nome'])) : '';
-    $pesoInput = isset($_POST['peso']) ? floatval($_POST['peso']) : 0;
-    $altezzaInput = isset($_POST['altezza']) ? floatval($_POST['altezza']) : 0;
+    $nomeInput = isset($_POST['nome']) ? htmlspecialchars(trim($_POST['nome'])) : '';
+    $pesoInput = isset($_POST['peso']) ? trim($_POST['peso']) : 0;
+    $altezzaInput = isset($_POST['altezza']) ? trim($_POST['altezza']) : 0;
 
-    if ($nome === '') {
+    if ($nomeInput === '') {
         $nome = "NOT_VALID";
         $ha_errore = true;
         $errore_nome = "Valore non valido.";
+    } else {
+        $nome = $nomeInput;
     }
 
     if ($pesoInput == null || !is_numeric($pesoInput) || floatval($pesoInput) <= 0) {
@@ -25,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ha_errore = true;
         $errore_peso = "Valore non valido.";
     } else {
-        $peso = $pesoInput;
+        $peso = floatval($pesoInput);
     }
 
     if ($altezzaInput == null || !is_numeric($altezzaInput) || $altezzaInput <= 0) {
@@ -33,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ha_errore = true;
         $errore_altezza = "Valore non valido.";
     } else {
-        $altezza_cm = $altezzaInput;
+        $altezza_cm = floatval($altezzaInput);
     }
 
     
@@ -67,21 +73,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             
         }
+
+
         if (!$ha_errore) {
             $mostra_form = false;
-        
-            $bmiFormatttato = ($bmi === "NOT_VALID") ? "NOT_VALID" : number_format($bmi, 2, '.', '');
-            $data = date("d/m/Y,G:i:s");
-            $ip = $_SERVER['REMOTE_ADDR'];
-
-            $nomeFile = "log.csv";
-            $file= fopen($nomeFile, "a");
-            
-            $record = implode(",", [$data, $ip, $nome, $altezza_cm, $peso, $bmiFormatttato, $fascia]);
-            $record .= PHP_EOL;
-            fwrite($file, $record);
-            fclose($file);  
         }
+        
+        $bmiFormatttato = ($bmi === "NOT_VALID") ? "NOT_VALID" : number_format($bmi, 2, '.', '');
+        $data = date("d/m/Y,G:i:s");
+        $ip = $_SERVER['REMOTE_ADDR'];
+
+        $nomeFile = "log.csv";
+        $file= fopen($nomeFile, "a");
+        
+        $record = implode(",", [$data, $ip, $nome, $altezza_cm, $peso, $bmiFormatttato, $fascia]);
+        $record .= PHP_EOL;
+        fwrite($file, $record);
+        fclose($file);  
         
 
 }
@@ -105,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form action="index.php" method="post">
                     <div class="form-group">
                         <label for="nome">Nome</label>
-                        <input type="text" id="nome" name="nome" placeholder="Luca" value="<?php if (!empty($errore_nome)) { echo htmlspecialchars($nome); } ?>">
+                        <input type="text" id="nome" name="nome" placeholder="Luca" value="<?php echo htmlspecialchars($nomeInput); ?>">
                         <?php if (!empty($errore_nome)): ?>
                             <div class="errore-messaggio">
                                 <?php echo $errore_nome?>
@@ -114,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="form-group">
                         <label for="peso">Peso (kg)</label>   <!-- Aggiungiamo un campo VALUE -->
-                        <input type="text" id="peso" name="peso" step="any" placeholder="70" value="<?php if (!empty($errore_peso)) { echo htmlspecialchars($pesoInput); } ?>">
+                        <input type="text" id="peso" name="peso" step="any" placeholder="70" value="<?php echo htmlspecialchars($pesoInput); ?>">
                         <?php if (!empty($errore_peso)): ?>
                             <div class="errore-messaggio">
                                 <?php echo $errore_peso; ?>
@@ -123,8 +131,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="form-group">
                         <label for="altezza">Altezza (cm)</label>
-                        <input type="text" id="altezza" name="altezza" step="any" placeholder="178" value="<?php if (!empty($errore_altezza)) { echo htmlspecialchars($altezzaInput); } ?>">
-                        <?php if (!empty($errore_altezzza)): ?>
+                        <input type="text" id="altezza" name="altezza" step="any" placeholder="178" value="<?php echo htmlspecialchars($altezzaInput); ?>">
+                        <?php if (!empty($errore_altezza)): ?>
                             <div class="errore-messaggio">
                                 <?php echo $errore_altezza; ?>
                             </div>
